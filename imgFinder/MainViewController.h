@@ -7,52 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
-#import <opencv2/videoio/cap_ios.h>
-#include <opencv2/features2d.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/calib3d.hpp>
-#include <vector>
-#include <map>
-#include <unordered_map>
-using namespace std;
-using namespace cv;
+#import "RetrieveObject.h"
 
-@interface MainViewController : UIViewController<AVCaptureVideoDataOutputSampleBufferDelegate, CvVideoCameraDelegate> {
+@interface MainViewController : UIViewController<RetrieveDelegate> {
     
     __weak IBOutlet UILabel *showLabel;
     __weak IBOutlet UIImageView *previewImageView;
-    CvVideoCamera* videoCamera;
-    flann::Index *flann_index;
+    RetrieveObject *retrieveObject;
     
-    BOOL enable;
-    vector<KeyPoint> kpts;
-    Mat desc;
-    
-    Mat totalDescs;
-    int vec[100000];
-    int index;
-    
-    int topK[100000];
-    int idx;
-    int galVec[100000];
-    int globalCount;
-    double start_time;
-    NSURLSession *sess;
-    
-    AVCaptureVideoDataOutput *output;
-    AVCaptureSession     *session;
-    AVCaptureDeviceInput *inputDevice;
-    
-    uint8_t *planerData;
-    
-    NSLock *theLock;
-    NSMutableArray *mArr;
-    Mat tmpFrame;
-    NSArray *fileArr;
-    int tick;
+    bool isCapture;
 }
-- (IBAction)uploadAction:(id)sender;
-    
+- (IBAction)clickAction:(id)sender;
+
 @end
