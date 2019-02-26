@@ -52,6 +52,9 @@ using namespace cv;
         unordered_map<int, int> matchMaps;
         uchar *lineData = (uchar *)(desc.data + i*desc.step[0]);
         vector<uint32_t> hashvals;
+        if(flann_index==NULL) {
+            return;
+        }
         flann_index->getHashVal(lineData, hashvals);
         
         for(int k=0; k<hashvals.size(); k++) {
@@ -115,8 +118,12 @@ using namespace cv;
 -(void)doRetrieve {
 
     [theLock lock];
+    if(![videoCamera running]) {
+        return;
+    }
     if(tmpFrame.empty()) {
         [theLock unlock];
+        [NSThread sleepForTimeInterval:0.01];
         dispatch_async(dispatch_queue_create(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self doRetrieve];
         });
@@ -178,6 +185,8 @@ using namespace cv;
 
 - (void)stopRetrieve {
     [videoCamera stop];
+    flann_index->release();
+    flann_index = NULL;
 }
 
 -(void)initPostImage:(NSString *)url {

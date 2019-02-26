@@ -40,6 +40,7 @@
 
 - (IBAction)clickAction:(id)sender {
     if(isCapture) {
+        [retrieveObject initRetrieve:@"http://172.18.250.30:9011/arImageHandle/search" :previewImageView];
         [retrieveObject startRetrieve];
     }
     else {
